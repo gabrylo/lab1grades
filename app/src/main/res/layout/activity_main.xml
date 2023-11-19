@@ -3,60 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewImie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="98dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="65dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
         android:text="Imię:"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/edName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Wpisz imię"
+        app:layout_constraintStart_toEndOf="@+id/textViewImie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewImie"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewNazwisko"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:hint="Wpisz liczbe"
+        android:layout_height="wrap_content"
+        android:text="Nazwisko:"
+        app:layout_constraintStart_toStartOf="@+id/textViewImie"
+        app:layout_constraintTop_toBottomOf="@+id/edName"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/edSurname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Wpisz nazwisko"
+        app:layout_constraintStart_toEndOf="@+id/textViewNazwisko"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewNazwisko"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewLiczbaOcen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvGradesNumber"
+        app:layout_constraintStart_toStartOf="@+id/textViewNazwisko"
+        app:layout_constraintTop_toBottomOf="@+id/edSurname"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/edGradeNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Wpisz liczbę ocen"
         android:inputType="number"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewLiczbaOcen"
+        app:layout_constraintTop_toTopOf="@+id/textViewLiczbaOcen" />
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="301dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="94dp"
-        tools:layout_editor_absoluteY="7dp" />
+    <Button
+        android:id="@+id/btGrades"
+        android:layout_width="387dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edGradeNumber" />
 
-    <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="76dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
