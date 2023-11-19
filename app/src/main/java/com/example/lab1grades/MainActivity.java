@@ -2,6 +2,8 @@ package com.example.lab1grades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.os.Bundle;
@@ -14,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText gradeNumberEditText;
     private Button btGrades;
 
+    private boolean isNameValid = false;
+    private boolean isSurnameValid = false;
+    private boolean isGradesValid = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,51 +31,75 @@ public class MainActivity extends AppCompatActivity {
 
         btGrades.setVisibility(View.INVISIBLE);
 
+        setFocusListeners();
+        setButtonClick();
+    }
+
+    private void setFocusListeners() {
         edName.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                validateName(edName);
+                isNameValid = validateName(edName);
+                validateAllFields();
             }
         });
 
         surnameEditText.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                validateName(surnameEditText);
+                isSurnameValid = validateName(surnameEditText);
+                validateAllFields();
             }
         });
 
         gradeNumberEditText.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                validateGrades(gradeNumberEditText);
+                isGradesValid = validateGrades(gradeNumberEditText);
+                validateAllFields();
             }
         });
+    }
 
+    private void setButtonClick() {
         btGrades.setOnClickListener(view -> onGradesButtonClick());
     }
 
-    private void validateName(EditText editText) {
-        String text = editText.getText().toString().trim();
-        if (text.isEmpty()) {
-            editText.setError("Pole nie może być puste");
+    private void validateAllFields() {
+        if (isNameValid && isSurnameValid && isGradesValid) {
+            btGrades.setVisibility(View.VISIBLE);
+        } else {
+            btGrades.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void validateGrades(EditText editText) {
+    private boolean validateName(EditText editText) {
         String text = editText.getText().toString().trim();
         if (text.isEmpty()) {
             editText.setError("Pole nie może być puste");
-            return;
+            return false;
+        } else {
+            editText.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateGrades(EditText editText) {
+        String text = editText.getText().toString().trim();
+        if (text.isEmpty()) {
+            editText.setError("Pole nie może być puste");
+            return false;
         }
 
         try {
             int numberOfGrades = Integer.parseInt(text);
             if (numberOfGrades < 5 || numberOfGrades > 15) {
                 editText.setError("Liczba ocen musi być z zakresu 5-15");
-                return;
+                return false;
+            } else {
+                editText.setError(null);
+                return true;
             }
-            // Jeśli wszystko jest w porządku, pokaż przycisk
-            btGrades.setVisibility(View.VISIBLE);
         } catch (NumberFormatException e) {
             editText.setError("Wprowadź poprawną liczbę");
+            return false;
         }
     }
 
@@ -78,3 +108,4 @@ public class MainActivity extends AppCompatActivity {
         // Na przykład zapisanie ocen, obliczenia itp.
     }
 }
+

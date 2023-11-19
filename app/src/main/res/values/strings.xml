@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">lab1grades</string>
     <string name="tvGradesNumber">"Liczba Ocen: "</string>
+    <string name="error_message_name">Prosze uzupelnic pole!</string>
+    <string name="empty_field_error">Pole nie może być puste!</string>
+    <string name="empty_grade_error">Pole nie może być puste!</string>
+    <string name="grade_range_error">Liczba powinna być od 5 do 15!</string>
+    <string name="invalid_number_error">Niepoprawna liczba!</string>
 
 </resources>
