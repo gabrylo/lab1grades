@@ -8,4 +8,22 @@
     <string name="invalid_number_error">Niepoprawna liczba!</string>
     <string name="invalid_grade_error">Niepoprawna liczba</string>
 
+    <string-array name="subjects_array">
+        <item>Polski</item>
+        <item>Matematyka</item>
+        <item>Angielski</item>
+        <item>Historia</item>
+        <item>Biologia</item>
+        <item>Niemiecki</item>
+        <item>Fizyka</item>
+        <item>Chemia</item>
+        <item>Programowanie Java</item>
+        <item>Bazy danych</item>
+        <item>Sieci</item>
+        <item>Grafika</item>
+        <item>Programowanie C#</item>
+        <item>Programowanie Android</item>
+        <item>Systemy Operacyjne</item>
+    </string-array>
+
 </resources>

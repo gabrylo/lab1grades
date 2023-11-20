@@ -2,6 +2,7 @@ package com.example.lab1grades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -102,7 +103,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onGradesButtonClick() {
-        // Do something when the grades button is clicked
+        if (isNameValid && isSurnameValid && isGradesValid) {
+            int numberOfGrades = Integer.parseInt(gradeNumberEditText.getText().toString());
+            if (numberOfGrades >= 5 && numberOfGrades <= 15) {
+                Intent intent = new Intent(MainActivity.this, GradesInputActivity.class);
+                intent.putExtra("numberOfGrades", numberOfGrades);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.grade_range_error), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
