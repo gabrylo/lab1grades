@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         edName = findViewById(R.id.edName);
         surnameEditText = findViewById(R.id.edSurname);
         gradeNumberEditText = findViewById(R.id.edGradeNumber);
@@ -33,26 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
         setFocusListeners();
         setButtonClick();
+
+        if (savedInstanceState != null) {
+            isNameValid = savedInstanceState.getBoolean("nameValid");
+            isSurnameValid = savedInstanceState.getBoolean("surnameValid");
+            isGradesValid = savedInstanceState.getBoolean("gradesValid");
+            validateAllFields();
+        }
     }
 
     private void setFocusListeners() {
         edName.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                isNameValid = validateName(edName);
+                isNameValid = validateField(edName, getString(R.string.empty_field_error), false);
                 validateAllFields();
             }
         });
 
         surnameEditText.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                isSurnameValid = validateName(surnameEditText);
+                isSurnameValid = validateField(surnameEditText, getString(R.string.empty_field_error), false);
                 validateAllFields();
             }
         });
 
         gradeNumberEditText.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
-                isGradesValid = validateGrades(gradeNumberEditText);
+                isGradesValid = validateField(gradeNumberEditText, getString(R.string.empty_grade_error), true);
                 validateAllFields();
             }
         });
@@ -62,50 +71,60 @@ public class MainActivity extends AppCompatActivity {
         btGrades.setOnClickListener(view -> onGradesButtonClick());
     }
 
-    private void validateAllFields() {
-        if (isNameValid && isSurnameValid && isGradesValid) {
-            btGrades.setVisibility(View.VISIBLE);
-        } else {
-            btGrades.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private boolean validateName(EditText editText) {
+    private boolean validateField(EditText editText, String errorMessage, boolean isGradeField) {
         String text = editText.getText().toString().trim();
         if (text.isEmpty()) {
-            editText.setError("Pole nie może być puste");
-            return false;
-        } else {
-            editText.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateGrades(EditText editText) {
-        String text = editText.getText().toString().trim();
-        if (text.isEmpty()) {
-            editText.setError("Pole nie może być puste");
+            editText.setError(errorMessage);
+            Toast.makeText(getApplicationContext(), getString(R.string.empty_field_error), Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        try {
-            int numberOfGrades = Integer.parseInt(text);
-            if (numberOfGrades < 5 || numberOfGrades > 15) {
-                editText.setError("Liczba ocen musi być z zakresu 5-15");
+        if (isGradeField) {
+            try {
+                int numberOfGrades = Integer.parseInt(text);
+                if (numberOfGrades < 5 || numberOfGrades > 15) {
+                    editText.setError(getString(R.string.grade_range_error));
+                    Toast.makeText(getApplicationContext(), getString(R.string.grade_range_error), Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                editText.setError(getString(R.string.invalid_grade_error));
                 return false;
-            } else {
-                editText.setError(null);
-                return true;
             }
-        } catch (NumberFormatException e) {
-            editText.setError("Wprowadź poprawną liczbę");
-            return false;
         }
+
+        editText.setError(null);
+        return true;
+    }
+
+    private void validateAllFields() {
+        btGrades.setVisibility((isNameValid && isSurnameValid && isGradesValid) ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void onGradesButtonClick() {
-        // Tutaj dodaj logikę, która ma być wywołana po kliknięciu przycisku btGrades
-        // Na przykład zapisanie ocen, obliczenia itp.
+        // Do something when the grades button is clicked
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name", edName.getText().toString());
+        outState.putString("surname", surnameEditText.getText().toString());
+        outState.putString("grades", gradeNumberEditText.getText().toString());
+        outState.putBoolean("nameValid", isNameValid);
+        outState.putBoolean("surnameValid", isSurnameValid);
+        outState.putBoolean("gradesValid", isGradesValid);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        edName.setText(savedInstanceState.getString("name"));
+        surnameEditText.setText(savedInstanceState.getString("surname"));
+        gradeNumberEditText.setText(savedInstanceState.getString("grades"));
+        isNameValid = savedInstanceState.getBoolean("nameValid");
+        isSurnameValid = savedInstanceState.getBoolean("surnameValid");
+        isGradesValid = savedInstanceState.getBoolean("gradesValid");
+        validateAllFields();
     }
 }
-

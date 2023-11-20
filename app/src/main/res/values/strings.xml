@@ -6,5 +6,6 @@
     <string name="empty_grade_error">Pole nie może być puste!</string>
     <string name="grade_range_error">Liczba powinna być od 5 do 15!</string>
     <string name="invalid_number_error">Niepoprawna liczba!</string>
+    <string name="invalid_grade_error">Niepoprawna liczba</string>
 
 </resources>
