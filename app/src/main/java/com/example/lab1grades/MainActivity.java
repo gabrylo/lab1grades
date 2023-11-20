@@ -1,15 +1,13 @@
 package com.example.lab1grades;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -137,4 +135,6 @@ public class MainActivity extends AppCompatActivity {
         isGradesValid = savedInstanceState.getBoolean("gradesValid");
         validateAllFields();
     }
+
+
 }

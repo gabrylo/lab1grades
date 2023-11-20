@@ -75,4 +75,5 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
 
         return ""; // Zwróć ocenę na podstawie ID RadioButtona
     }
+
 }
