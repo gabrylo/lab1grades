@@ -1,10 +1,14 @@
 package com.example.lab1grades;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +45,9 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
         holder.radioGroupGrades.setOnCheckedChangeListener((group, checkedId) -> {
             String selectedGrade = getGradeFromRadioButtonId(checkedId);
             grades[position] = selectedGrade;
+
+            // Wywołaj metodę obliczającą i wyświetlającą średnią ocen
+            calculateAndDisplayAverageGrade(holder.itemView.getContext());
         });
     }
 
@@ -60,20 +67,54 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
         }
     }
 
-    // Metoda pomocnicza do mapowania oceny na ID RadioButtona
     private int getRadioButtonIdFromGrade(String grade) {
-        // Implementacja mapowania oceny na RadioButtonId
-        // ...
-
-        return 0; // Zwróć ID RadioButtona na podstawie oceny
+        switch (grade){
+            case "1":
+                return R.id.radioButton2;
+            case "2":
+                return R.id.radioButton3;
+            // Dodaj inne przypadki ocen i przypisz odpowiednie identyfikatory RadioButton
+            default:
+                return 0; // Domyślny identyfikator RadioButton
+        }
     }
 
-    // Metoda pomocnicza do mapowania ID RadioButtona na ocenę
     private String getGradeFromRadioButtonId(int checkedId) {
-        // Implementacja mapowania RadioButtonId na ocenę
-        // ...
-
-        return ""; // Zwróć ocenę na podstawie ID RadioButtona
+        if (checkedId == R.id.radioButton2) {
+            return "1";
+        } else if (checkedId == R.id.radioButton3) {
+            return "2";
+        } else {
+            return ""; // Domyślna ocena
+        }
     }
 
+
+    private void calculateAndDisplayAverageGrade(Context context) {
+        float averageGrade = calculateAverageGrade();
+        if (averageGrade > 0) {
+            String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
+            Toast.makeText(context, averageText, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private float calculateAverageGrade() {
+        int sum = 0;
+        int count = 0;
+
+        for (String grade : grades) {
+            if (grade != null) {
+                sum += Integer.parseInt(grade);
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            return (float) sum / count;
+        } else {
+            return 0; // Brak ocen, zwróć 0
+        }
+    }
 }

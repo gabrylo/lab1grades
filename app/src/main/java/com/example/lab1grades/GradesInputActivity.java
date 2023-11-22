@@ -2,6 +2,8 @@ package com.example.lab1grades;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,10 +16,13 @@ public class GradesInputActivity extends AppCompatActivity {
 
     private int numberOfGrades;
 
+    private Button btavarage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades_input);
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
