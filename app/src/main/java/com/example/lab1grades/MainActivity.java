@@ -149,28 +149,28 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_GRADES_INPUT) {
             if (resultCode == RESULT_OK && data != null) {
                 float averageGrade = data.getFloatExtra("averageGrade", 0.0f);
-                String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
+                String averageText = getString(R.string.grades_rating) + String.format("%.2f", averageGrade);
 
                 TextView tvGrades = findViewById(R.id.tvGrades);
                 Button btGrades = findViewById(R.id.btGrades);
 
                 if (averageGrade >= 3) {
                     tvGrades.setText(averageText); // Ustawienie tekstu w TextView
-                    btGrades.setText("SUPER");
+                    btGrades.setText(R.string.btsuper);
                     btGrades.setOnClickListener(view -> {
-                        Toast.makeText(this, "Gratulacje! Otrzymujesz zaliczenie", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.received_pass, Toast.LENGTH_SHORT).show();
                         finish(); // Zakończenie aplikacji po kliknięciu przycisku
                     });
                 } else {
                     tvGrades.setText(averageText); // Ustawienie tekstu w TextView
-                    btGrades.setText("Tym razem nie poszlo ): "); // Tekst pierwotny przycisku
+                    btGrades.setText(R.string.not_received_pass); // Tekst pierwotny przycisku
                     btGrades.setOnClickListener(view -> {
-                        Toast.makeText(this, "Wysyłam podanie o zaliczenie warunkowe", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.final_application, Toast.LENGTH_SHORT).show();
                         finish(); // Zakończenie aplikacji po kliknięciu przycisku
                     });
                 }
             } else {
-                Toast.makeText(this, "Nie udało się obliczyć średniej oceny", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.avarage_not_calc, Toast.LENGTH_SHORT).show();
             }
         }
     }

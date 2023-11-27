@@ -7,6 +7,21 @@
     <string name="grade_range_error">Liczba powinna być od 5 do 15!</string>
     <string name="invalid_number_error">Niepoprawna liczba!</string>
     <string name="invalid_grade_error">Niepoprawna liczba</string>
+    <string name="btsuper">SUPER</string>
+    <string name="grades_rating">"Średnia ocen: "</string>
+    <string name="received_pass">Gratulacje! Otrzymujesz zaliczenie</string>
+    <string name="not_received_pass">"Tym razem nie poszlo ): "</string>
+    <string name="final_application">Wysyłam podanie o zaliczenie warunkowe</string>
+    <string name="avarage_not_calc">Nie udało się obliczyć średniej oceny</string>
+    <string name="enter_all_rating">Wprowadź wszystkie oceny</string>
+    <string name="no_grade_to_calc">Brak ocen do obliczenia średniej</string>
+    <string name="btAvarage">Oblicz średnią</string>
+    <string name="btGrades">Oceny</string>
+    <string name="tvName">Imię:\n</string>
+    <string name="hint_name">Wpisz imię</string>
+    <string name="tvSurName">Nazwisko:</string>
+    <string name="hint_surname">Wpisz nazwisko</string>
+    <string name="hint_GradesNumber">Wpisz liczbę ocen</string>
 
     <string-array name="subjects_array">
         <item>Polski</item>

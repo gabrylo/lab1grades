@@ -2,7 +2,6 @@ package com.example.lab1grades;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,7 +29,7 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.rvGrades);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
@@ -53,7 +52,7 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
             recyclerView.setAdapter(adapter);
         }
 
-        btAverage = findViewById(R.id.btavarage);
+        btAverage = findViewById(R.id.btAvarage);
         btAverage.setOnClickListener(view -> calculateAndDisplayAverageGrade());
     }
 
@@ -77,10 +76,10 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
-                    Toast.makeText(this, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.no_grade_to_calc, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Wprowadź wszystkie oceny", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.enter_all_rating, Toast.LENGTH_SHORT).show();
             }
         }
     }

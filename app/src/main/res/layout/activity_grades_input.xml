@@ -9,10 +9,10 @@
     tools:context=".GradesInputActivity">
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerView"
+      android:id="@+id/rvGrades"
       android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@+id/btavarage"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@+id/btAvarage"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.497"
       app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +21,10 @@
       tools:listitem="@layout/item_subject_grade" />
 
   <Button
-      android:id="@+id/btavarage"
+      android:id="@+id/btAvarage"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Button"
+      android:text="@string/btAvarage"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
