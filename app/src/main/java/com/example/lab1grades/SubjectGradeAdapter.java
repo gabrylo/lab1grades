@@ -16,10 +16,11 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
 
     private String[] subjects;
     private String[] grades;
+    private GradeChangeListener gradeChangeListener;
 
     public SubjectGradeAdapter(String[] subjects) {
         this.subjects = subjects;
-        this.grades = new String[subjects.length]; // Inicjalizacja ocen dla każdego przedmiotu
+        this.grades = new String[subjects.length];
     }
 
     @NonNull
@@ -33,21 +34,20 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
     public void onBindViewHolder(@NonNull SubjectGradeViewHolder holder, int position) {
         holder.textViewSubjectName.setText(subjects[position]);
 
-        holder.radioGroupGrades.setOnCheckedChangeListener(null); // Reset listenera, by uniknąć niepotrzebnych wywołań zdarzeń
+        holder.radioGroupGrades.setOnCheckedChangeListener(null);
 
-        // Ustawianie ocen dla danego przedmiotu
         if (grades[position] != null) {
             int radioButtonId = getRadioButtonIdFromGrade(grades[position]);
             holder.radioGroupGrades.check(radioButtonId);
         }
 
-        // Obsługa zmiany oceny
         holder.radioGroupGrades.setOnCheckedChangeListener((group, checkedId) -> {
             String selectedGrade = getGradeFromRadioButtonId(checkedId);
             grades[position] = selectedGrade;
 
-            // Wywołaj metodę obliczającą i wyświetlającą średnią ocen
-            calculateAndDisplayAverageGrade(holder.itemView.getContext());
+            if (gradeChangeListener != null) {
+                gradeChangeListener.onGradeChanged(grades);
+            }
         });
     }
 
@@ -68,53 +68,48 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
     }
 
     private int getRadioButtonIdFromGrade(String grade) {
-        switch (grade){
-            case "1":
-                return R.id.radioButton2;
+        switch (grade) {
             case "2":
+                return R.id.radioButton2;
+            case "3":
                 return R.id.radioButton3;
-            // Dodaj inne przypadki ocen i przypisz odpowiednie identyfikatory RadioButton
+            case "4":
+                return R.id.radioButton4;
+            case "5":
+                return R.id.radioButton5;
+            case "6":
+                return R.id.radioButton6;
             default:
-                return 0; // Domyślny identyfikator RadioButton
+                return 0;
         }
     }
 
     private String getGradeFromRadioButtonId(int checkedId) {
         if (checkedId == R.id.radioButton2) {
-            return "1";
-        } else if (checkedId == R.id.radioButton3) {
             return "2";
+        } else if (checkedId == R.id.radioButton3) {
+            return "3";
+        } else if (checkedId == R.id.radioButton4) {
+            return "4";
+        } else if (checkedId == R.id.radioButton5) {
+            return "5";
+        } else if (checkedId == R.id.radioButton6) {
+            return "6";
         } else {
-            return ""; // Domyślna ocena
+            return "";
         }
     }
 
 
-    private void calculateAndDisplayAverageGrade(Context context) {
-        float averageGrade = calculateAverageGrade();
-        if (averageGrade > 0) {
-            String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
-            Toast.makeText(context, averageText, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
-        }
+    public String[] getGrades() {
+        return grades;
     }
 
-    private float calculateAverageGrade() {
-        int sum = 0;
-        int count = 0;
+    public interface GradeChangeListener {
+        void onGradeChanged(String[] updatedGrades);
+    }
 
-        for (String grade : grades) {
-            if (grade != null) {
-                sum += Integer.parseInt(grade);
-                count++;
-            }
-        }
-
-        if (count > 0) {
-            return (float) sum / count;
-        } else {
-            return 0; // Brak ocen, zwróć 0
-        }
+    public void setGradeChangeListener(GradeChangeListener listener) {
+        this.gradeChangeListener = listener;
     }
 }
