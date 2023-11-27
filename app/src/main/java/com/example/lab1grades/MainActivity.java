@@ -152,19 +152,27 @@ public class MainActivity extends AppCompatActivity {
                 String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
 
                 TextView tvGrades = findViewById(R.id.tvGrades);
-                tvGrades.setText(averageText); // Ustawienie tekstu w TextView
-
                 Button btGrades = findViewById(R.id.btGrades);
+
                 if (averageGrade >= 3) {
+                    tvGrades.setText(averageText); // Ustawienie tekstu w TextView
                     btGrades.setText("SUPER");
-                    btGrades.setOnClickListener(view -> finish()); // Zakończenie aplikacji po kliknięciu przycisku
+                    btGrades.setOnClickListener(view -> {
+                        Toast.makeText(this, "Gratulacje! Otrzymujesz zaliczenie", Toast.LENGTH_SHORT).show();
+                        finish(); // Zakończenie aplikacji po kliknięciu przycisku
+                    });
                 } else {
-                    btGrades.setText("btGrades"); // Tekst pierwotny przycisku
-                    btGrades.setOnClickListener(view -> onGradesButtonClick()); // Przywrócenie pierwotnej akcji przycisku
+                    tvGrades.setText(averageText); // Ustawienie tekstu w TextView
+                    btGrades.setText("Tym razem nie poszlo ): "); // Tekst pierwotny przycisku
+                    btGrades.setOnClickListener(view -> {
+                        Toast.makeText(this, "Wysyłam podanie o zaliczenie warunkowe", Toast.LENGTH_SHORT).show();
+                        finish(); // Zakończenie aplikacji po kliknięciu przycisku
+                    });
                 }
             } else {
                 Toast.makeText(this, "Nie udało się obliczyć średniej oceny", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }

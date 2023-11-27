@@ -23,6 +23,15 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
         this.grades = new String[subjects.length];
     }
 
+    public SubjectGradeAdapter(String[] subjects, String[] savedGrades) {
+        this.subjects = subjects;
+        if (savedGrades != null) {
+            this.grades = savedGrades;
+        } else {
+            this.grades = new String[subjects.length];
+        }
+    }
+
     @NonNull
     @Override
     public SubjectGradeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,7 +108,6 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
             return "";
         }
     }
-
 
     public String[] getGrades() {
         return grades;

@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 
-public class GradesInputActivity extends AppCompatActivity {
+public class GradesInputActivity extends AppCompatActivity implements SubjectGradeAdapter.GradeChangeListener {
 
     private int numberOfGrades;
-    private Button btavarage;
-    private SubjectGradeAdapter adapter; // Deklaracja adaptera
+    private Button btAverage;
+    private SubjectGradeAdapter adapter;
+
+    private static final String SAVED_GRADES_KEY = "saved_grades";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,46 +41,41 @@ public class GradesInputActivity extends AppCompatActivity {
             String[] limitedSubjects = new String[numberOfGrades];
             System.arraycopy(subjects, 0, limitedSubjects, 0, Math.min(subjects.length, numberOfGrades));
 
-            // Inicjalizacja adaptera na poziomie klasy
-            adapter = new SubjectGradeAdapter(limitedSubjects);
+            if (savedInstanceState != null && savedInstanceState.containsKey(SAVED_GRADES_KEY)) {
+                // Przywrócenie danych adaptera
+                String[] savedGrades = savedInstanceState.getStringArray(SAVED_GRADES_KEY);
+                adapter = new SubjectGradeAdapter(limitedSubjects, savedGrades);
+            } else {
+                adapter = new SubjectGradeAdapter(limitedSubjects);
+            }
+
+            adapter.setGradeChangeListener(this);
             recyclerView.setAdapter(adapter);
         }
 
-        btavarage = findViewById(R.id.btavarage);
-        btavarage.setOnClickListener(view -> {
-            boolean allGradesEntered = true; // Flaga określająca, czy wszystkie oceny zostały wprowadzone
-
-            if (adapter != null && !adapter.areAllGradesEntered()) {
-                Toast.makeText(this, "Wprowadź wszystkie oceny", Toast.LENGTH_SHORT).show();
-                return; // Przerwij działanie metody, jeśli nie wszystkie oceny zostały wprowadzone
-            }
-
-            calculateAndDisplayAverageGrade();
-        });
+        btAverage = findViewById(R.id.btavarage);
+        btAverage.setOnClickListener(view -> calculateAndDisplayAverageGrade());
     }
 
     private void calculateAndDisplayAverageGrade() {
         if (adapter != null) {
             String[] grades = adapter.getGrades();
-            boolean allGradesEntered = true; // Flaga określająca, czy wszystkie oceny zostały wprowadzone
+            boolean allGradesEntered = true;
 
-            if (grades != null) {
-                for (String grade : grades) {
-                    if (grade.isEmpty()) {
-                        allGradesEntered = false;
-                        break;
-                    }
+            for (String grade : grades) {
+                if (grade == null || grade.isEmpty()) {
+                    allGradesEntered = false;
+                    break;
                 }
             }
 
             if (allGradesEntered) {
                 float averageGrade = calculateAverageGrade(grades);
                 if (averageGrade > 0) {
-                    // Zamiast Toast, przekaż średnią ocenę do MainActivity
                     Intent intent = new Intent();
                     intent.putExtra("averageGrade", averageGrade);
                     setResult(RESULT_OK, intent);
-                    finish(); // Zakończ aktywność GradesInputActivity
+                    finish();
                 } else {
                     Toast.makeText(this, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
                 }
@@ -99,10 +96,21 @@ public class GradesInputActivity extends AppCompatActivity {
             }
         }
 
-        if (count > 0) {
-            return (float) sum / count;
-        } else {
-            return 0; // Brak ocen, zwróć 0
+        return count > 0 ? (float) sum / count : 0;
+    }
+
+    @Override
+    public void onGradeChanged(String[] updatedGrades) {
+        // Ta metoda zostanie wywołana przy zmianie ocen w adapterze
+        // Możesz reagować na zmiany ocen, jeśli to konieczne
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (adapter != null) {
+            String[] grades = adapter.getGrades();
+            outState.putStringArray(SAVED_GRADES_KEY, grades);
         }
     }
 }
