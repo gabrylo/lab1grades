@@ -74,8 +74,11 @@ public class GradesInputActivity extends AppCompatActivity {
             if (allGradesEntered) {
                 float averageGrade = calculateAverageGrade(grades);
                 if (averageGrade > 0) {
-                    String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
-                    Toast.makeText(this, averageText, Toast.LENGTH_SHORT).show();
+                    // Zamiast Toast, przekaż średnią ocenę do MainActivity
+                    Intent intent = new Intent();
+                    intent.putExtra("averageGrade", averageGrade);
+                    setResult(RESULT_OK, intent);
+                    finish(); // Zakończ aktywność GradesInputActivity
                 } else {
                     Toast.makeText(this, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
                 }

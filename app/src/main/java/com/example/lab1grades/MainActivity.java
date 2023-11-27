@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNameValid = false;
     private boolean isSurnameValid = false;
     private boolean isGradesValid = false;
+
+    private static final int REQUEST_CODE_GRADES_INPUT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             if (numberOfGrades >= 5 && numberOfGrades <= 15) {
                 Intent intent = new Intent(MainActivity.this, GradesInputActivity.class);
                 intent.putExtra("numberOfGrades", numberOfGrades);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_GRADES_INPUT);
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.grade_range_error), Toast.LENGTH_SHORT).show();
             }
@@ -140,5 +143,28 @@ public class MainActivity extends AppCompatActivity {
         validateAllFields();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_GRADES_INPUT) {
+            if (resultCode == RESULT_OK && data != null) {
+                float averageGrade = data.getFloatExtra("averageGrade", 0.0f);
+                String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
 
+                TextView tvGrades = findViewById(R.id.tvGrades);
+                tvGrades.setText(averageText); // Ustawienie tekstu w TextView
+
+                Button btGrades = findViewById(R.id.btGrades);
+                if (averageGrade >= 3) {
+                    btGrades.setText("SUPER");
+                    btGrades.setOnClickListener(view -> finish()); // Zakończenie aplikacji po kliknięciu przycisku
+                } else {
+                    btGrades.setText("btGrades"); // Tekst pierwotny przycisku
+                    btGrades.setOnClickListener(view -> onGradesButtonClick()); // Przywrócenie pierwotnej akcji przycisku
+                }
+            } else {
+                Toast.makeText(this, "Nie udało się obliczyć średniej oceny", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
