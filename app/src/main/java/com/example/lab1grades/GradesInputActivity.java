@@ -45,13 +45,33 @@ public class GradesInputActivity extends AppCompatActivity {
         }
 
         btavarage = findViewById(R.id.btavarage);
-        btavarage.setOnClickListener(view -> calculateAndDisplayAverageGrade());
+        btavarage.setOnClickListener(view -> {
+            boolean allGradesEntered = true; // Flaga określająca, czy wszystkie oceny zostały wprowadzone
+
+            if (adapter != null && !adapter.areAllGradesEntered()) {
+                Toast.makeText(this, "Wprowadź wszystkie oceny", Toast.LENGTH_SHORT).show();
+                return; // Przerwij działanie metody, jeśli nie wszystkie oceny zostały wprowadzone
+            }
+
+            calculateAndDisplayAverageGrade();
+        });
     }
 
     private void calculateAndDisplayAverageGrade() {
         if (adapter != null) {
             String[] grades = adapter.getGrades();
+            boolean allGradesEntered = true; // Flaga określająca, czy wszystkie oceny zostały wprowadzone
+
             if (grades != null) {
+                for (String grade : grades) {
+                    if (grade.isEmpty()) {
+                        allGradesEntered = false;
+                        break;
+                    }
+                }
+            }
+
+            if (allGradesEntered) {
                 float averageGrade = calculateAverageGrade(grades);
                 if (averageGrade > 0) {
                     String averageText = "Średnia ocen: " + String.format("%.2f", averageGrade);
@@ -59,6 +79,8 @@ public class GradesInputActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Brak ocen do obliczenia średniej", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(this, "Wprowadź wszystkie oceny", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -112,4 +112,13 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
     public void setGradeChangeListener(GradeChangeListener listener) {
         this.gradeChangeListener = listener;
     }
+
+    public boolean areAllGradesEntered() {
+        for (String grade : grades) {
+            if (grade == null || grade.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
