@@ -146,32 +146,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_GRADES_INPUT) {
-            if (resultCode == RESULT_OK && data != null) {
-                float averageGrade = data.getFloatExtra("averageGrade", 0.0f);
-                String averageText = getString(R.string.grades_rating) + String.format("%.2f", averageGrade);
+        if (requestCode == REQUEST_CODE_GRADES_INPUT && resultCode == RESULT_OK && data != null) {
+            float averageGrade = data.getFloatExtra("averageGrade", 0.0f);
+            updateButtonBasedOnGrade(averageGrade);
+        } else {
+            Toast.makeText(this, R.string.avarage_not_calc, Toast.LENGTH_SHORT).show();
+        }
+    }
 
-                TextView tvGrades = findViewById(R.id.tvGrades);
-                Button btGrades = findViewById(R.id.btGrades);
+    private void updateButtonBasedOnGrade(float averageGrade) {
+        TextView tvGrades = findViewById(R.id.tvGrades);
+        Button btGrades = findViewById(R.id.btGrades);
 
-                if (averageGrade >= 3) {
-                    tvGrades.setText(averageText); // Ustawienie tekstu w TextView
-                    btGrades.setText(R.string.btsuper);
-                    btGrades.setOnClickListener(view -> {
-                        Toast.makeText(this, R.string.received_pass, Toast.LENGTH_SHORT).show();
-                        finish(); // Zakończenie aplikacji po kliknięciu przycisku
-                    });
-                } else {
-                    tvGrades.setText(averageText); // Ustawienie tekstu w TextView
-                    btGrades.setText(R.string.not_received_pass); // Tekst pierwotny przycisku
-                    btGrades.setOnClickListener(view -> {
-                        Toast.makeText(this, R.string.final_application, Toast.LENGTH_SHORT).show();
-                        finish(); // Zakończenie aplikacji po kliknięciu przycisku
-                    });
-                }
-            } else {
-                Toast.makeText(this, R.string.avarage_not_calc, Toast.LENGTH_SHORT).show();
-            }
+        String averageText = getString(R.string.grades_rating) + String.format("%.2f", averageGrade);
+
+        if (averageGrade >= 3) {
+            tvGrades.setText(averageText);
+            btGrades.setText(R.string.btsuper);
+            btGrades.setOnClickListener(view -> {
+                Toast.makeText(this, R.string.received_pass, Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        } else {
+            tvGrades.setText(averageText);
+            btGrades.setText(R.string.not_received_pass);
+            btGrades.setOnClickListener(view -> {
+                Toast.makeText(this, R.string.final_application, Toast.LENGTH_SHORT).show();
+                finish();
+            });
         }
     }
 

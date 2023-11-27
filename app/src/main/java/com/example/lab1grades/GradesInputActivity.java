@@ -100,7 +100,6 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
 
     @Override
     public void onGradeChanged(String[] updatedGrades) {
-        // Ta metoda zostanie wywołana przy zmianie ocen w adapterze
         // Możesz reagować na zmiany ocen, jeśli to konieczne
     }
 
