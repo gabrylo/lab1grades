@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             isNameValid = savedInstanceState.getBoolean("nameValid");
             isSurnameValid = savedInstanceState.getBoolean("surnameValid");
-            isGradesValid = savedInstanceState.getBoolean("gradesValid");
+            isGradesValid = savedInstanceState.getBoolean("gradesValid"); // przywrocenie stanu aplikacji po obrocie urzadzenia
             validateAllFields();
         }
     }
 
-    private void setFocusListeners() {
+    private void setFocusListeners() {   // Metoda ustawiajaca nasluchiwacze dla zmiany focusu w polach tekstowych
         edName.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 isNameValid = validateField(edName, getString(R.string.empty_field_error), false);
@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setButtonClick() {
-        btGrades.setOnClickListener(view -> onGradesButtonClick());
+        btGrades.setOnClickListener(view -> onGradesButtonClick()); // Metoda dzialania przycisku
     }
 
-    private boolean validateField(EditText editText, String errorMessage, boolean isGradeField) {
+    private boolean validateField(EditText editText, String errorMessage, boolean isGradeField) {  // Metoda walidujaca pole tekstowe
         String text = editText.getText().toString().trim();
         if (text.isEmpty()) {
             editText.setError(errorMessage);
@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void validateAllFields() {
+    private void validateAllFields() { //walidacja wszystkich pol
         btGrades.setVisibility((isNameValid && isSurnameValid && isGradesValid) ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private void onGradesButtonClick() {
+    private void onGradesButtonClick() {//walidacja danych
         if (isNameValid && isSurnameValid && isGradesValid) {
             int numberOfGrades = Integer.parseInt(gradeNumberEditText.getText().toString());
             if (numberOfGrades >= 5 && numberOfGrades <= 15) {
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("nameValid", isNameValid);
         outState.putBoolean("surnameValid", isSurnameValid);
         outState.putBoolean("gradesValid", isGradesValid);
-    }
+    }       // Zapisywanie stanu aplikacji
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         isSurnameValid = savedInstanceState.getBoolean("surnameValid");
         isGradesValid = savedInstanceState.getBoolean("gradesValid");
         validateAllFields();
-    }
+    } // Przywracanie stanu aplikacji
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.avarage_not_calc, Toast.LENGTH_SHORT).show();
         }
     }
+    // Obsługa wyników z aktywności wprowadzania ocen
 
     private void updateButtonBasedOnGrade(float averageGrade) {
         TextView tvGrades = findViewById(R.id.tvGrades);
@@ -175,6 +176,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             });
         }
-    }
+    } // Aktualizacja przycisku na podstawie średniej oceny
 
 }

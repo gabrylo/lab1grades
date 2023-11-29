@@ -1,18 +1,15 @@
 package com.example.lab1grades;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapter.SubjectGradeViewHolder> {
+public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapter.SubjectGradeViewHolder> {  // Adapter dla RecyclerView do zarzadzania ocenami przedmiotow
 
     private String[] subjects;
     private String[] grades;
@@ -38,6 +35,7 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject_grade, parent, false);
         return new SubjectGradeViewHolder(view);
     }
+    // Metoda tworzaca widok pojedynczego elementu
 
     @Override
     public void onBindViewHolder(@NonNull SubjectGradeViewHolder holder, int position) {
@@ -57,6 +55,7 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
             if (gradeChangeListener != null) {
                 gradeChangeListener.onGradeChanged(grades);
             }
+            // Nasluchiwanie zmian w RadioGroup z ocenami
         });
     }
 
@@ -64,6 +63,7 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
     public int getItemCount() {
         return subjects.length;
     }
+    // Metoda zwracajaca liczbe elementow w RecyclerView
 
     public static class SubjectGradeViewHolder extends RecyclerView.ViewHolder {
         TextView textViewSubjectName;
@@ -112,21 +112,16 @@ public class SubjectGradeAdapter extends RecyclerView.Adapter<SubjectGradeAdapte
     public String[] getGrades() {
         return grades;
     }
+    // Metoda zwracajaca tablice z ocenami
 
     public interface GradeChangeListener {
         void onGradeChanged(String[] updatedGrades);
     }
+    // Interfejs do nasluchiwania zmian ocen
 
     public void setGradeChangeListener(GradeChangeListener listener) {
         this.gradeChangeListener = listener;
     }
 
-    public boolean areAllGradesEntered() {
-        for (String grade : grades) {
-            if (grade == null || grade.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }

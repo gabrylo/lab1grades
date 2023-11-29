@@ -18,7 +18,7 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
     private Button btAverage;
     private SubjectGradeAdapter adapter;
 
-    private static final String SAVED_GRADES_KEY = "saved_grades";
+    private static final String SAVED_GRADES_KEY = "saved_grades"; //klucz do zapisania ocen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,35 +27,37 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Ustawienie przycisku powrotu
 
         RecyclerView recyclerView = findViewById(R.id.rvGrades);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
-        numberOfGrades = intent.getIntExtra("numberOfGrades", 0);
+        numberOfGrades = intent.getIntExtra("numberOfGrades", 0); // Pobranie liczby ocen z poprzedniej aktywności
+
 
         if (numberOfGrades > 0) {
-            String[] subjects = getResources().getStringArray(R.array.subjects_array);
+            String[] subjects = getResources().getStringArray(R.array.subjects_array); // Pobranie tablicy przedmiotów z zasobów
             String[] limitedSubjects = new String[numberOfGrades];
-            System.arraycopy(subjects, 0, limitedSubjects, 0, Math.min(subjects.length, numberOfGrades));
+            System.arraycopy(subjects, 0, limitedSubjects, 0, Math.min(subjects.length, numberOfGrades)); // Ograniczenie liczby przedmiotów
 
+            // Sprawdzenie, czy istnieje zapisany stan adaptera
             if (savedInstanceState != null && savedInstanceState.containsKey(SAVED_GRADES_KEY)) {
-                // Przywrócenie danych adaptera
+                // Przywrócenie stanu adaptera z zapisanych ocen
                 String[] savedGrades = savedInstanceState.getStringArray(SAVED_GRADES_KEY);
                 adapter = new SubjectGradeAdapter(limitedSubjects, savedGrades);
             } else {
-                adapter = new SubjectGradeAdapter(limitedSubjects);
+                adapter = new SubjectGradeAdapter(limitedSubjects); // Utworzenie nowego adaptera
             }
 
-            adapter.setGradeChangeListener(this);
-            recyclerView.setAdapter(adapter);
+            adapter.setGradeChangeListener(this); // Ustawienie nasłuchiwacza na zmiany ocen
+            recyclerView.setAdapter(adapter); // Ustawienie adaptera w RecyclerView
         }
 
-        btAverage = findViewById(R.id.btAvarage);
-        btAverage.setOnClickListener(view -> calculateAndDisplayAverageGrade());
+        btAverage = findViewById(R.id.btAvarage); // Inicjalizacja przycisku średniej
+        btAverage.setOnClickListener(view -> calculateAndDisplayAverageGrade()); // Ustawienie akcji dla przycisku średniej
     }
-
+    // Metoda obliczajaca i wyświetlajaca srednia ocene
     private void calculateAndDisplayAverageGrade() {
         if (adapter != null) {
             String[] grades = adapter.getGrades();
@@ -83,7 +85,7 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
             }
         }
     }
-
+    // Metoda obliczajaca srednią ocene
     private float calculateAverageGrade(String[] grades) {
         int sum = 0;
         int count = 0;
@@ -100,7 +102,7 @@ public class GradesInputActivity extends AppCompatActivity implements SubjectGra
 
     @Override
     public void onGradeChanged(String[] updatedGrades) {
-        // Możesz reagować na zmiany ocen, jeśli to konieczne
+
     }
 
     @Override
